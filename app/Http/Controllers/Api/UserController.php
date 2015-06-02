@@ -1,43 +1,58 @@
 <?php namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\UserRequest;
-use App\Http\Controllers\Controller;
 
-use App\Models\User;
+use App\User;
+use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
+use App\Http\Transformers\UserTransformer;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller {
+class UserController extends ApiController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index(Request $request)
-	{
+
+    /**
+     * @return mixed
+     */
+    public function index()
+    {
         $users = User::all();
-        return $this->responseArrayJson($users);
-	}
+        return $this->response->withCollection($users, new UserTransformer);
+    }
+
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
-	public function store(UserRequest $request)
+	public function store(Request $request)
 	{
-        $user = null;
-        $message = '';
-        $statusCode = 200;
+        $rules = [
+            'name'      => 'required',
+            'email'     => 'required|email|unique:users',
+            'password'  => 'required',
+        ];
+
+        $response = '';
+
+        $validation = Validator::make($request->all(), $rules);
+
+        if($validation->fails())
+        {
+            $response = $this->response->errorInternalError($validation->errors());
+        }
 
         try{
             $user = User::create($request->all());
         }catch (\Exception $e){
-            $statusCode = 500;
-            $message = 'Une erreur est survenue';
+            $response = $this->response->errorInternalError($e->getMessage());
         }
 
-        return $this->responseItemJson($user, $message, $statusCode);
+        $response = $this->response->withItem($user, new UserTransformer);
+        return $response;
+
 	}
 
 	/**
@@ -48,8 +63,18 @@ class UserController extends Controller {
 	 */
 	public function show(Request $request, $id)
 	{
-        $returnModel = $this->findModel('User', $id);
-        return $this->responseItemJsonWithArray($returnModel);
+        $response = '';
+        $user = User::find($id);
+
+        if($user)
+        {
+            $response = $this->response->withItem($user, new UserTransformer);
+        }else
+        {
+            $response = $this->response->errorNotFound('Utilisateur non trouvé');
+        }
+
+        return $response;
 	}
 
 	/**
@@ -58,20 +83,42 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(UserRequest $request, $id)
+	public function update(Request $request, $id)
 	{
-        $user = User::findOrFail($id);
-        $message = '';
-        $statusCode = 200;
-
-        try{
-            $user->update($request->all());
-        }catch (\Exception $e){
-            $statusCode = 500;
-            $message = 'Une erreur est survenue';
+        $user = User::find($id);
+        if( ! $user )
+        {
+            return $this->response->errorNotFound('Utilisateur non trouvé');
         }
 
-        return $this->responseItemJson($user, $message, $statusCode);
+        $rules = [
+            'name'      => 'required',
+//            'email'     => 'required|email|unique:users',
+            'password'  => 'required',
+        ];
+
+        $response = '';
+
+        $validation = Validator::make($request->all(), $rules);
+
+        if($validation->fails())
+        {
+            $response = $this->response->errorInternalError($validation->errors());
+        }
+
+
+        try{
+            $user->name = $request->get('name');
+            $user->password = $request->get('password');
+
+            $user->save();
+            $response = $this->response->withItem($user, new UserTransformer);
+
+        }catch (\Exception $e){
+            $response = $this->response->errorInternalError($e->getMessage());
+        }
+
+        return $response;
 	}
 
 	/**
@@ -82,19 +129,19 @@ class UserController extends Controller {
 	 */
 	public function destroy(Request $request, $id)
 	{
-        $message = 'L\utilisateur a bien été supprimé';
-        $statusCode = 200;
-        try
+        $user = User::find($id);
+
+        $response = '';
+
+        if( ! $user)
         {
-            User::findOrFail($id)->delete();
-        }catch(\Exception $e)
+            $response = $this->response->errorNotFound('Utilisateur non trouvé');
+        }else
         {
-            $message = 'L\utilisateur n\'a pas pu être supprimé';
-            $statusCode = 500;
+            $user->delete();
         }
 
-        return $this->responseItemJson(null, $message, $statusCode);
-
+        return $response;
 	}
 
     /**

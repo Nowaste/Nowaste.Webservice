@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class FoodController extends Controller {
+class FoodController extends ApiController {
 
 	/**
 	 * Display a listing of the resource.

@@ -1,12 +1,11 @@
 <?php namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\FridgeRequest;
-use App\Http\Controllers\Controller;
 
 use App\Models\Fridge;
 use Illuminate\Http\Request;
 
-class FridgeController extends Controller {
+class FridgeController extends ApiController {
 
 	/**
 	 * Display a listing of the resource.
@@ -16,7 +15,7 @@ class FridgeController extends Controller {
 	public function index()
 	{
         $fridges = Fridge::all();
-        return $this->responseArrayJson($fridges);
+//        return $this->responseArrayJson($fridges);
 	}
 
 	/**
@@ -37,7 +36,7 @@ class FridgeController extends Controller {
             $message = 'Une erreur est survenue';
         }
 
-        return $this->responseItemJson($fridge, $message, $statusCode);
+//        return $this->responseItemJson($fridge, $message, $statusCode);
 	}
 
 	/**

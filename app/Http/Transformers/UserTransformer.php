@@ -1,6 +1,6 @@
-<?php namespace Http\Transformers;
+<?php namespace App\Http\Transformers;
 
-use App\Models\User;
+use App\User;
 use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract {
