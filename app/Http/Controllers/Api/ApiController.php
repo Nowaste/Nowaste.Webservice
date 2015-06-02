@@ -9,14 +9,21 @@
 namespace App\Http\Controllers\Api;
 
 
-use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
+use EllipseSynergie\ApiResponse\Laravel\Response;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller;
 
-class ApiController extends ApiGuardController
+class ApiController extends Controller
 {
 
     use DispatchesCommands, ValidatesRequests;
 
+    protected $response;
+
+    public function __construct(Response $response)
+    {
+        $this->response = $response;
+    }
 
 } 

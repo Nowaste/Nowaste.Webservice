@@ -26,4 +26,6 @@ class FoodFridge extends Model
      */
     protected $guarded = [];
 
+    public $timestamps = false;
+
 } 

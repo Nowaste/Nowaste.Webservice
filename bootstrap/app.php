@@ -41,6 +41,8 @@ $app->singleton(
 	'App\Exceptions\Handler'
 );
 
+$app->register('EllipseSynergie\ApiResponse\Laravel\LumenServiceProvider');
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

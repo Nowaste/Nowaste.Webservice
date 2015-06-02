@@ -1,17 +1,27 @@
 <?
-/**
- * /users
- */
-Route::resource('users','UserController');
-Route::get('/login', 'UserController@login');
-Route::post('/logout', 'UserController@logout');
 
 /**
- * /foods
+ * /auth
  */
-Route::resource('foods','FoodController');
+Route::post('/auth/login', 'AuthController@login');
 
-/**
- * /fridges
- */
-Route::resource('fridges','FridgeController');
+
+Route::group(['middleware' => 'checktoken'], function(){
+    /**
+     * /users
+     */
+    Route::resource('users','UserController');
+
+    /**
+     * /foods
+     */
+    Route::resource('foods','FoodController');
+
+    /**
+     * /fridges
+     */
+    Route::resource('fridges','FridgeController');
+
+    Route::post('/auth/logout', 'AuthController@logout');
+
+});

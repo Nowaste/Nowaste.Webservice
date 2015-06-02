@@ -15,19 +15,19 @@ class CreateFoodsFridgesTable extends Migration {
         Schema::create('food_fridge', function(Blueprint $table)
         {
 
-            $table->integer('food_id')->unsigned()->nullable();
-            $table->foreign('food_id')->references('id')->on('foods');
-
-            $table->integer('fridge_id')->unsigned()->nullable();
-            $table->foreign('fridge_id')->references('id')->on('fridges');
-
-            $table->primary(['food_id', 'fridge_id']);
+            $table->increments('id');
 
             $table->date('out_of_date');
             $table->date('consumed_date')->nullable();
             $table->integer('quantity')->nullable();
             $table->boolean('visible')->nullable();
             $table->boolean('open')->nullable();
+        });
+
+        Schema::table('foods', function(Blueprint $table)
+        {
+            $table->integer('food_fridge_id')->unsign;ed()->nullable();
+            $table->foreign('food_fridge_id')->references('id')->on('food_fridge');
         });
 	}
 
@@ -39,6 +39,12 @@ class CreateFoodsFridgesTable extends Migration {
 	public function down()
 	{
         Schema::dropIfExists('food_fridge');
+
+        Schema::table('foods', function(Blueprint $table)
+        {
+            $table->dropForeign('foods_food_fridge_id_foreign');
+            $table->dropColumn('food_fridge_id');
+        });
     }
 
 }

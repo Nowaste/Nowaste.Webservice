@@ -42,15 +42,23 @@ class UserController extends ApiController {
         if($validation->fails())
         {
             $response = $this->response->errorInternalError($validation->errors());
+        }else
+        {
+            try{
+
+                $user = new User();
+                $user->name = $request->get('name');
+                $user->email = $request->get('email');
+                $user->password = bcryp($request->get('password'));
+                $user->save();
+
+            }catch (\Exception $e){
+                $response = $this->response->errorInternalError($e->getMessage());
+            }
+
+            $response = $this->response->withItem($user, new UserTransformer);
         }
 
-        try{
-            $user = User::create($request->all());
-        }catch (\Exception $e){
-            $response = $this->response->errorInternalError($e->getMessage());
-        }
-
-        $response = $this->response->withItem($user, new UserTransformer);
         return $response;
 
 	}
@@ -104,18 +112,18 @@ class UserController extends ApiController {
         if($validation->fails())
         {
             $response = $this->response->errorInternalError($validation->errors());
-        }
+        }else
+        {
+            try{
+                $user->name = $request->get('name');
+                $user->password = bcrypt($request->get('password'));
 
+                $user->save();
+                $response = $this->response->withItem($user, new UserTransformer);
 
-        try{
-            $user->name = $request->get('name');
-            $user->password = $request->get('password');
-
-            $user->save();
-            $response = $this->response->withItem($user, new UserTransformer);
-
-        }catch (\Exception $e){
-            $response = $this->response->errorInternalError($e->getMessage());
+            }catch (\Exception $e){
+                $response = $this->response->errorInternalError($e->getMessage());
+            }
         }
 
         return $response;
@@ -144,19 +152,4 @@ class UserController extends ApiController {
         return $response;
 	}
 
-    /**
-     * @param Request $request
-     */
-    public function login(Request $request)
-    {
-
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function logout(Request $request)
-    {
-
-    }
 }

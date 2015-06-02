@@ -155,10 +155,16 @@ return [
          */
         'Zizaco\Entrust\EntrustServiceProvider',
 
-        /**
-         * Gestion Api Access
+
+        /*
+         * JWT Auth
          */
-        'Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider',
+        'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
+
+        /**
+         * Api response
+         */
+        'EllipseSynergie\ApiResponse\Laravel\ResponseServiceProvider',
 	],
 
 	/*
@@ -212,6 +218,11 @@ return [
          */
         'Entrust' => 'Zizaco\Entrust\EntrustFacade',
 
+        /*
+         * JWT Auth
+         */
+        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
+        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory'
 
 	],
 

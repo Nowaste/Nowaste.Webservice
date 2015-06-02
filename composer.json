@@ -8,7 +8,8 @@
 		"laravel/framework": "5.0.*",
         "zizaco/entrust": "dev-laravel-5",
 		"barryvdh/laravel-ide-helper": "^2.0",
-        "chrisbjr/api-guard": "~2.0"
+        "tymon/jwt-auth": "0.5.*",
+		"ellipsesynergie/api-response": "^0.10.0"
 
 	},
 	"require-dev": {
