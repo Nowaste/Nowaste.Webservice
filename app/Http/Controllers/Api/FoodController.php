@@ -231,7 +231,27 @@ class FoodController extends ApiController {
 
     private function _processCustomList($request, $id = null)
     {
+        /**
+         * Get custom list
+         */
+        $customList = Fridge::findOrFail($request->get('custom_list_id'));
 
+        /**
+         * Set food
+         */
+        if($id)
+        {
+            $food = Food::findOrFail($id);
+        }else{
+            $food = new Food();
+        }
+
+        $food->name = $request->get('name');
+        $food->customList()->associate($customList);
+        $food->save();
+
+
+        return $food;
     }
 
 }
