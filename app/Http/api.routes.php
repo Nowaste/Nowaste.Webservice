@@ -22,6 +22,12 @@ Route::group(['middleware' => 'checktoken'], function(){
      */
     Route::resource('fridges','FridgeController');
 
+
+    /**
+     * /custom-lists
+     */
+    Route::resource('custom-lists','CustomListController');
+
     Route::post('/auth/logout', 'AuthController@logout');
 
 });
