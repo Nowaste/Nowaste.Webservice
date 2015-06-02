@@ -20,11 +20,11 @@ class CustomList extends FoodList
     protected $guarded = [];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        return $this->hasOne('App\\Models\\User');
+        return $this->belongsTo('App\\User');
     }
 
     /**

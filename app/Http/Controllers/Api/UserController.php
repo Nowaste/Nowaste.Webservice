@@ -2,11 +2,15 @@
 
 use App\Http\Requests\UserRequest;
 
+use App\Http\Transformers\FridgeTransformer;
+use App\Models\CustomList;
+use App\Models\Fridge;
 use App\User;
 use Chrisbjr\ApiGuard\Http\Controllers\ApiGuardController;
 use App\Http\Transformers\UserTransformer;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends ApiController {
@@ -152,4 +156,58 @@ class UserController extends ApiController {
         return $response;
 	}
 
+    public function getOwnFridges(Request $request)
+    {
+
+        $user = Auth::user();
+        $response = '';
+
+        if($user)
+        {
+            $fridges = $user->fridges;
+            $response = $this->response->withCollection($fridges, new FridgeTransformer);
+        }else
+        {
+            $response = $this->response->errorNotFound('Utilisateur non trouvé');
+        }
+
+        return $response;
+    }
+
+    public function getWatchingFridges(Request $request)
+    {
+
+        $user = Auth::user();
+        $response = '';
+
+        if($user)
+        {
+            $fridges = $user->watchingFridges;
+            $response = $this->response->withCollection($fridges, new FridgeTransformer);
+
+        }else
+        {
+            $response = $this->response->errorNotFound('Utilisateur non trouvé');
+        }
+
+        return $response;
+    }
+
+    public function getCustomLists(Request $request)
+    {
+
+        $user = Auth::user();
+        $response = '';
+
+        if($user)
+        {
+            $customsLists = $user->customLists;
+            $response = $this->response->withCollection($customsLists, new FridgeTransformer);
+        }else
+        {
+            $response = $this->response->errorNotFound('Utilisateur non trouvé');
+        }
+
+        return $response;
+    }
 }

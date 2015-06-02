@@ -19,8 +19,14 @@ class CustomListTranformer extends TransformerAbstract
     {
         $return = [
             'id'    => (int) $customList->id,
-            'name'  => $customList->name
+            'name'  => $customList->name,
+            'foods' => []
         ];
+
+        $foodTransformer = new FoodTransformer();
+        $customList->foods->each(function($food) use($foodTransformer,&$return){
+            $return['foods'][] = $foodTransformer->transform($food);
+        });
 
         return $return;
     }

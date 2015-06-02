@@ -32,7 +32,7 @@ class Fridge extends FoodList
      */
     public function user()
     {
-        return $this->belongsTo('App\\Models\\User');
+        return $this->belongsTo('App\\User');
     }
 
 
@@ -41,7 +41,7 @@ class Fridge extends FoodList
      */
     public function watchers()
     {
-        return $this->belongsToMany('App\\Models\\User', 'fridge_watchers');
+        return $this->belongsToMany('App\\User', 'fridge_watchers');
     }
 
 }

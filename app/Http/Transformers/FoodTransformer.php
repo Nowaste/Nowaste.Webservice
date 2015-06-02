@@ -29,9 +29,6 @@ class FoodTransformer extends TransformerAbstract
             $return['quantity'] = $foodFridge->quantity;
             $return['visible'] = $foodFridge->visible;
             $return['open'] = $foodFridge->open;
-
-            $fridgeTransformer = new FridgeTransformer();
-            $return['fridge'] = $fridgeTransformer->transform($food->fridge);
         }
 
         return $return;

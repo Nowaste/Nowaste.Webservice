@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Transformers\CustomListTranformer;
 use App\Models\CustomList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CustomListController extends ApiController {
@@ -43,6 +44,7 @@ class CustomListController extends ApiController {
         }else{
             $customList = new CustomList();
             $customList->name = $request->get('name');
+            $customList->user()->associate(Auth::user());
             $customList->save();
 
             $response = $this->response->withItem($customList, new CustomListTranformer);

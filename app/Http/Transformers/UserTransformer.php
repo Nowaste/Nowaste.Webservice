@@ -11,5 +11,7 @@ class UserTransformer extends TransformerAbstract {
             'id'     => (int) $user->id,
             'title' => $user->name,
         ];
+
+
     }
 }

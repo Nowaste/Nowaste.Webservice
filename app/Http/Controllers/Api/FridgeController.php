@@ -5,6 +5,7 @@ use App\Http\Requests\FridgeRequest;
 use App\Http\Transformers\FridgeTransformer;
 use App\Models\Fridge;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class FridgeController extends ApiController {
@@ -41,6 +42,7 @@ class FridgeController extends ApiController {
         }else{
             $fridge = new Fridge();
             $fridge->name = $request->get('name');
+            $fridge->user()->associate(Auth::user());
             $fridge->save();
 
             $response = $this->response->withItem($fridge, new FridgeTransformer);

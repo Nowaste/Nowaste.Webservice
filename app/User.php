@@ -54,7 +54,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function watchingFridges()
     {
-        return $this->belongsToMany('App\\Models\\Fridges', 'fridge_watchers');
+        return $this->belongsToMany('App\\Models\\Fridge', 'fridge_watchers');
     }
 
     public function customLists()
