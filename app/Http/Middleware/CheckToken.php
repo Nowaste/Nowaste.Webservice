@@ -1,5 +1,6 @@
 <?php namespace App\Http\Middleware;
 
+use App\User;
 use Closure;
 use EllipseSynergie\ApiResponse\Laravel\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
