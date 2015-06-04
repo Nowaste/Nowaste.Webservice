@@ -53,7 +53,7 @@ class UserController extends ApiController {
                 $user = new User();
                 $user->name = $request->get('name');
                 $user->email = $request->get('email');
-                $user->password = bcryp($request->get('password'));
+                $user->password = password_hash($request->get('password'), PASSWORD_BCRYPT);
                 $user->save();
 
             }catch (\Exception $e){
@@ -120,7 +120,7 @@ class UserController extends ApiController {
         {
             try{
                 $user->name = $request->get('name');
-                $user->password = bcrypt($request->get('password'));
+                $user->password = password_hash($request->get('password'), PASSWORD_BCRYPT);
 
                 $user->save();
                 $response = $this->response->withItem($user, new UserTransformer);
