@@ -26,7 +26,7 @@ class CreateFoodsFridgesTable extends Migration {
 
         Schema::table('foods', function(Blueprint $table)
         {
-            $table->integer('food_fridge_id')->unsign;ed()->nullable();
+            $table->integer('food_fridge_id')->unsigned()->nullable();
             $table->foreign('food_fridge_id')->references('id')->on('food_fridge');
         });
 	}
