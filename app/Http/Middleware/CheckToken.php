@@ -3,6 +3,7 @@
 use App\User;
 use Closure;
 use EllipseSynergie\ApiResponse\Laravel\Response;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
