@@ -5,6 +5,18 @@
  */
 Route::post('/auth/login', 'AuthController@login');
 
+Route::get('/', function(){
+    return response()->json(['message' => 'Bienvenue sur le webservice de l\'application No waste']);
+});
+
+
+Route::get('/test', function(){
+    return response()->json(['message' => 'Ceci est la page de test en requête GET']);
+});
+
+Route::post('/test', function(){
+    return response()->json(['message' => 'Ceci est la page de test en requête POST']);
+});
 
 Route::group(['middleware' => 'checktoken'], function(){
     /**
