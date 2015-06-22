@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * /auth
@@ -6,16 +6,16 @@
 Route::post('/auth/login', 'AuthController@login');
 
 Route::get('/', function(){
-    return response()->json(['message' => 'Bienvenue sur le webservice de l\'application No waste']);
+    return response()->json(['Bienvenue sur le webservice de l\'application No waste']);
 });
 
 
 Route::get('/test', function(){
-    return response()->json(['message' => 'Ceci est la page de test en requête GET']);
+    return response()->json(['Ceci est la page de test en requête GET']);
 });
 
 Route::post('/test', function(){
-    return response()->json(['message' => 'Ceci est la page de test en requête POST']);
+    return response()->json(['Ceci est la page de test en requête POST']);
 });
 
 Route::group(['middleware' => 'checktoken'], function(){
@@ -38,7 +38,7 @@ Route::group(['middleware' => 'checktoken'], function(){
      * /fridges
      */
     Route::group(['prefix' => 'fridges'], function(){
-
+        Route::get('/{id}/foods', 'FridgeController@getFoods');
     });
     Route::resource('fridges','FridgeController');
 

@@ -131,4 +131,13 @@ class FridgeController extends ApiController {
         return $response;
 	}
 
+
+    public function getFoods(Request $request, $id)
+    {
+        $fridge = Fridge::findOrFail($id);
+
+        $foods = $fridge->foods;
+
+        return $foods;
+    }
 }
