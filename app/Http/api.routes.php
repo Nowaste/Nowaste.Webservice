@@ -53,4 +53,7 @@ Route::group(['middleware' => 'checktoken'], function(){
      */
     Route::post('/auth/logout', 'AuthController@logout');
 
+
+
 });
+Route::get('/sync', 'ApiController@sync');

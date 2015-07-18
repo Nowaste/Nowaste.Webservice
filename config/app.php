@@ -165,6 +165,8 @@ return [
          * Api response
          */
         'EllipseSynergie\ApiResponse\Laravel\ResponseServiceProvider',
+
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider'
 	],
 
 	/*

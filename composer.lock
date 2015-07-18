@@ -8,24 +8,24 @@
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v2.0.3",
+            "version": "v2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "d8d5517f2cc55d534a7fc8f50ff62cb55115e1aa"
+                "reference": "037386153630a7515a1542f29410d8c267651689"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/d8d5517f2cc55d534a7fc8f50ff62cb55115e1aa",
-                "reference": "d8d5517f2cc55d534a7fc8f50ff62cb55115e1aa",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/037386153630a7515a1542f29410d8c267651689",
+                "reference": "037386153630a7515a1542f29410d8c267651689",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "5.0.x",
-                "illuminate/filesystem": "5.0.x",
-                "illuminate/support": "5.0.x",
+                "illuminate/console": "5.0.x|5.1.x",
+                "illuminate/filesystem": "5.0.x|5.1.x",
+                "illuminate/support": "5.0.x|5.1.x",
                 "php": ">=5.4.0",
-                "phpdocumentor/reflection-docblock": "2.0.x",
+                "phpdocumentor/reflection-docblock": "2.0.4",
                 "symfony/class-loader": "~2.3"
             },
             "require-dev": {
@@ -67,7 +67,7 @@
                 "phpstorm",
                 "sublime"
             ],
-            "time": "2015-03-17 08:00:28"
+            "time": "2015-06-25 08:58:59"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -2249,7 +2249,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/804000c1c535221792b4e173ecdcc02b5681f5ec",
+                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/3a768eb52300ec4efe9d6a6685b9bf0db6a50ffd",
                 "reference": "804000c1c535221792b4e173ecdcc02b5681f5ec",
                 "shasum": ""
             },

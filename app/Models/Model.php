@@ -18,4 +18,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Model extends \Illuminate\Database\Eloquent\Model
 {
     use SoftDeletes;
+
+    public static function getTableName()
+    {
+        return with(new static)->table;
+    }
 } 
