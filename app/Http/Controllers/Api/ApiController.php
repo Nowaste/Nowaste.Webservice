@@ -32,12 +32,12 @@ class ApiController extends Controller
     public function sync(Request $request)
     {
         $this->validate($request, [
-            'user_id'   => 'required',
-            'last_sync' => 'required',
+            'userId'   => 'required',
+            'lastSync' => 'required',
         ]);
 
-        $user_id = $request->input('user_id');
-        $last_sync = $request->input('last_sync');
+        $user_id = $request->input('userId');
+        $last_sync = $request->input('lastSync');
 
         $classes = [
             '\App\Models\Configuration',
