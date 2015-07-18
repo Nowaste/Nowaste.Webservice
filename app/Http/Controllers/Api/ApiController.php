@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Models\Configuration;
+use App\Models\Fridge;
 use EllipseSynergie\ApiResponse\Laravel\Response;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -49,6 +50,7 @@ class ApiController extends Controller
 
         $return = [];
 
+        $dateFormat = 'Y-m-d H:i:s';
 
         foreach($classes as $class)
         {
@@ -57,7 +59,7 @@ class ApiController extends Controller
 
             $model = app($class);
 
-            $return[$model::getTableName()] = $model::where('updated_at', '>', $last_sync)->get()->toArray();
+            $return[$model::getTableName()] = $model::where('updated_at', '>', date($dateFormat,$last_sync))->get()->toArray();
         }
 
         return response()->json($return);

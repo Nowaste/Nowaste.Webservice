@@ -19,6 +19,8 @@ class Model extends \Illuminate\Database\Eloquent\Model
 {
     use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
+
     public static function getTableName()
     {
         return with(new static)->table;
