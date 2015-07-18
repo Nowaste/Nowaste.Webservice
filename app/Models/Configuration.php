@@ -1,7 +1,5 @@
 <?php namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * Class Configuration
  * @package App\Models
