@@ -12,39 +12,40 @@ use Illuminate\Support\Facades\Validator;
 
 class FoodController extends ApiController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
+    {
         $foods = Food::all();
         return $this->response->withCollection($foods, new FoodTransformer);
-	}
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store(Request $request)
-	{
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
         $rules = [
             'name'      => 'required',
         ];
 
         $method = null;
 
+
         if($request->has('fridge_id'))
         {
             /**
              * Rules for fridges
              */
-            $rules['out_of_date'] = 'required';
-            $rules['quantity'] = 'required|integer';
-            $rules['visible'] = 'required|boolean';
-            $rules['open'] = 'required|boolean';
+            $rules['food_fridge.out_of_date'] = 'required';
+            $rules['food_fridge.quantity'] = 'required|integer';
+            $rules['food_fridge.visible'] = 'required|boolean';
+            $rules['food_fridge.open'] = 'required|boolean';
 
             $method = '_processFridge';
 
@@ -60,33 +61,27 @@ class FoodController extends ApiController {
             return $this->response->errorWrongArgs();
         }
 
+        $this->validate($request, $rules);
         $response = '';
 
-
-        $validation = Validator::make($request->all(), $rules);
-
-        if($validation->fails())
+        if($method)
         {
-            $response = $this->response->errorInternalError($validation->errors());
-        }else{
-            if($method)
-            {
-                $food = $this->$method($request);
-                $response = $this->response->withItem($food, new FoodTransformer);
+            $food = $this->$method($request);
+            $response = response()->json($food);
 
-            }
         }
+//        }
         return $response;
-	}
+    }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show(Request $request, $id)
-	{
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show(Request $request, $id)
+    {
         $response = '';
         $food = Food::find($id);
 
@@ -99,21 +94,17 @@ class FoodController extends ApiController {
         }
 
         return $response;
-	}
+    }
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update(Request $request, $id)
-	{
-        $food = Food::find($id);
-        if( ! $food )
-        {
-            return $this->response->errorNotFound('Aliment non trouvé');
-        }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function update(Request $request, $id)
+    {
+        $food = Food::findOrFail($id);
 
         $rules = [
             'name'      => 'required',
@@ -126,10 +117,10 @@ class FoodController extends ApiController {
             /**
              * Rules for fridges
              */
-            $rules['out_of_date'] = 'required';
-            $rules['quantity'] = 'required|integer';
-            $rules['visible'] = 'required|boolean';
-            $rules['open'] = 'required|boolean';
+            $rules['food_fridge.out_of_date'] = 'required';
+            $rules['food_fridge.quantity'] = 'required|integer';
+            $rules['food_fridge.visible'] = 'required|boolean';
+            $rules['food_fridge.open'] = 'required|boolean';
 
             $method = '_processFridge';
 
@@ -145,33 +136,28 @@ class FoodController extends ApiController {
             return $this->response->errorWrongArgs();
         }
 
+        $this->validate($request, $rules);
         $response = '';
 
-        $validation = Validator::make($request->all(), $rules);
 
-        if($validation->fails())
+        if($method)
         {
-            $response = $this->response->errorInternalError($validation->errors());
-        }else{
-            if($method)
-            {
-                $food = $this->$method($request, $id);
-                $response = $this->response->withItem($food, new FoodTransformer);
-            }
+            $food = $this->$method($request, $id);
+            $response = response()->json($food);
         }
 
         return $response;
 
-	}
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy(Request $request, $id)
-	{
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function destroy(Request $request, $id)
+    {
         $food = Food::find($id);
 
         $response = '';
@@ -185,7 +171,7 @@ class FoodController extends ApiController {
         }
 
         return $response;
-	}
+    }
 
     private function _processFridge($request, $id = null)
     {
@@ -214,10 +200,12 @@ class FoodController extends ApiController {
         /**
          * Set info food
          */
-        $foodFridge->out_of_date = $request->get('out_of_date');
-        $foodFridge->quantity = $request->get('quantity');
-        $foodFridge->visible = $request->get('visible');
-        $foodFridge->open = $request->get('open');
+        $ff = $request->get('food_fridge');
+
+        $foodFridge->out_of_date = $ff['out_of_date'];
+        $foodFridge->quantity = $ff['quantity'];
+        $foodFridge->visible =$ff['visible'];
+        $foodFridge->open = $ff['open'];
 
         $foodFridge->save();
 
