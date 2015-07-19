@@ -18,8 +18,12 @@ class CustomListController extends ApiController {
 	 */
 	public function index()
 	{
-        $fridges = CustomList::all();
-        return $this->response->withCollection($fridges, new CustomListTranformer);
+        $customLists = CustomList::all();
+
+        $customLists->each(function($customList){
+            $customList->foods;
+        });
+        return response()->json($customLists);
 	}
 
 
@@ -36,21 +40,15 @@ class CustomListController extends ApiController {
 
         $response = '';
 
-        $validation = Validator::make($request->all(), $rules);
 
-        if($validation->fails())
-        {
-            $response = $this->response->errorInternalError($validation->errors());
-        }else{
-            $customList = new CustomList();
-            $customList->name = $request->get('name');
-            $customList->user()->associate(Auth::user());
-            $customList->save();
+        $this->validate($request, $rules);
 
-            $response = $this->response->withItem($customList, new CustomListTranformer);
-        }
+        $customList = new CustomList();
+        $customList->name = $request->get('name');
+        $customList->user()->associate(Auth::user());
+        $customList->save();
 
-        return $response;
+        return response()->json($customList);
 	}
 
 	/**
@@ -61,18 +59,9 @@ class CustomListController extends ApiController {
 	 */
 	public function show($id)
     {
-        $response = '';
-        $customList = CustomList::find($id);
+        $customList = CustomList::findOrFail($id);
 
-        if($customList)
-        {
-            $response = $this->response->withItem($customList, new CustomListTranformer);
-        }else
-        {
-            $response = $this->response->errorNotFound('Liste personnalisée non trouvée');
-        }
-
-        return $response;
+        return response()->json($customList);
     }
 
 	/**
@@ -83,31 +72,19 @@ class CustomListController extends ApiController {
 	 */
 	public function update(Request $request, $id)
 	{
-        $customList = CustomList::find($id);
-        if( ! $customList )
-        {
-            return $this->response->errorNotFound('Frigo non trouvé');
-        }
+        $customList = CustomList::findOrFail($id);
+
 
         $rules = [
             'name'      => 'required',
         ];
 
-        $response = '';
+        $this->validate($request, $rules);
 
-        $validation = Validator::make($request->all(), $rules);
+        $customList->name = $request->get('name');
+        $customList->save();
 
-        if($validation->fails())
-        {
-            $response = $this->response->errorInternalError($validation->errors());
-        }else{
-            $customList->name = $request->get('name');
-            $customList->save();
-
-            $response = $this->response->withItem($customList, new CustomListTranformer);
-        }
-
-        return $response;
+        return response()->json($customList);
 	}
 
 	/**
@@ -119,19 +96,11 @@ class CustomListController extends ApiController {
 	public function destroy($id)
 	{
 
-        $customList = CustomList::find($id);
+        $customList = CustomList::findOrFail($id);
 
-        $response = '';
+        $customList->delete();
 
-        if( ! $customList)
-        {
-            $response = $this->response->errorNotFound('Liste personnalisée non trouvée');
-        }else
-        {
-            $customList->delete();
-        }
-
-        return $response;
+        return response()->json($customList);
 	}
 
 }
